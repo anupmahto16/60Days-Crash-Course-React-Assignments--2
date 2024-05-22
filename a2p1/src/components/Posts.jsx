@@ -1,6 +1,4 @@
-// src/components/Posts.jsx
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Post from "./Post";
 import LoadingIndicator from "./LoadingIndicator";
@@ -13,12 +11,12 @@ function Posts() {
 
   async function fetchAndUpdateData() {
     setLoading(true);
+    setError(false);
     try {
       let res = await axios({
         method: "get",
         url: `https://jsonplaceholder.typicode.com/posts`,
       });
-
       setPosts(res.data);
       setLoading(false);
     } catch (error) {
@@ -26,10 +24,6 @@ function Posts() {
       setLoading(false);
     }
   }
-
-  useEffect(() => {
-    fetchAndUpdateData();
-  }, []);
 
   if (loading) {
     return <LoadingIndicator />;
@@ -42,7 +36,10 @@ function Posts() {
   return (
     <div>
       <h1>List of Posts</h1>
-      {posts?.map((post) => (
+      <button onClick={fetchAndUpdateData}>
+        Click to display list of posts
+      </button>
+      {posts.map((post) => (
         <Post {...post} key={post.id} />
       ))}
     </div>

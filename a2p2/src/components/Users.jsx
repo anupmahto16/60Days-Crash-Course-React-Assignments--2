@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import User from "./User";
 import LoadingIndicator from "./LoadingIndicator";
@@ -25,6 +25,10 @@ function Users() {
     }
   }
 
+  useEffect(() => {
+    fetchAndUpdateData();
+  }, []);
+
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -36,9 +40,6 @@ function Users() {
   return (
     <div>
       <h1>List of users</h1>
-      <button onClick={fetchAndUpdateData}>
-        Click to display list of users
-      </button>
       {users?.map((user) => (
         <User {...user} key={user.id} />
       ))}
